@@ -1,0 +1,16 @@
+{{- if .Values.resources }}
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: tenant-quota
+spec:
+  hard:
+    {{- if and .Values.resources.requests.cpu .Values.resources.requests.memory }}
+    requests.cpu: {{ .Values.resources.requests.cpu }}
+    requests.memory: {{ .Values.resources.requests.memory }}
+    {{- end }}
+    {{- if and .Values.resources.limits.cpu .Values.resources.limits.memory }}
+    limits.cpu: {{ .Values.resources.limits.cpu }}
+    limits.memory: {{ .Values.resources.limits.memory }}
+    {{- end }}
+{{- end }}

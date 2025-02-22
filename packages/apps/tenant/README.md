@@ -58,3 +58,4 @@ tenant-u1
 | `ingress`    | Deploy own Ingress Controller                                                                                               | `false` |
 | `seaweedfs`  | Deploy own SeaweedFS                                                                                                        | `false` |
 | `isolated`   | Enforce tenant namespace with network policies                                                                              | `false` |
+| `resources`  | Tenant quotas                                                                                                               | `{}`    |
