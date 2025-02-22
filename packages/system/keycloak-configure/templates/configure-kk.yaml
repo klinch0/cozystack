@@ -7,6 +7,7 @@
 {{- $existingK8sSecret := lookup "v1" "Secret" .Release.Namespace "k8s-client" }}
 {{- $existingKubeappsSecret := lookup "v1" "Secret" .Release.Namespace "kubeapps-client" }}
 {{- $existingAuthConfig := lookup "v1" "Secret" "cozy-dashboard" "kubeapps-auth-config" }}
+{{- $wlConfigmap := lookup "v1" "ConfigMap" "cozy-dashboard" "white-label" }}
 
 {{ $k8sClient := "" }}
 {{- if $existingK8sSecret }}
@@ -29,9 +30,10 @@
   {{- $cookieSecret = randAlphaNum 16 }}
 {{- end }}
 
-{{- $wlConfigmap := lookup "v1" "ConfigMap" "cozy-dashboard" "white-label" }}
-{{- $locale := index $wlConfigmap.data "locale" }}
-
+{{- $locale := "" }}
+{{- if $wlConfigmap }}
+  {{- $locale = index $wlConfigmap.data "locale" | default "" }}
+{{- end }}
 ---
 
 apiVersion: v1
@@ -87,7 +89,8 @@ spec:
   realmName: cozy
   clusterKeycloakRef: keycloak-cozy
   {{- if $locale }}
-  displayNameHtml: {{ $locale }}
+  displayHtmlName: {{ $locale }}
+  displayName: {{ $locale }}
   {{- end }}
 
 ---
