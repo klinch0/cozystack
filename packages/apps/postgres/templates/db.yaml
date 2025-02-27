@@ -6,12 +6,9 @@ metadata:
 spec:
   instances: {{ .Values.replicas }}
   enableSuperuserAccess: true
-  {{- $configMap := lookup "v1" "ConfigMap" "cozy-system" "cozystack-scheduling" }}
-  {{- if $configMap }}
-  {{- $rawConstraints := get $configMap.data "globalAppTopologySpreadConstraints" }}
-  {{- if $rawConstraints }}
-  {{- $rawConstraints | fromYaml | toYaml | nindent 2 }}
-  {{- end }}
+  {{ if .Values.topologySpreadConstraints }}
+  topologySpreadConstraints:
+    {{- toYaml .Values.topologySpreadConstraints | nindent 4 }}
   {{- end }}
   postgresql:
     parameters:
