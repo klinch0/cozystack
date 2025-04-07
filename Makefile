@@ -1,3 +1,6 @@
+COMMIT_HASH := $(shell git rev-parse --short HEAD)
+SANDBOX_NAME := cozy-e2e-sandbox-$(COMMIT_HASH)
+
 .PHONY: manifests repos assets
 
 build-deps:
@@ -45,9 +48,9 @@ assets:
 	make -C packages/core/installer/ assets
 
 test:
-	make -C packages/core/testing apply
-	make -C packages/core/testing test
-	#make -C packages/core/testing test-applications
+	make -C packages/core/testing SANDBOX_NAME="${SANDBOX_NAME}" apply
+	make -C packages/core/testing SANDBOX_NAME="${SANDBOX_NAME}" test
+	#make -C packages/core/testing SANDBOX_NAME="${SANDBOX_NAME}" test-applications
 
 generate:
 	hack/update-codegen.sh

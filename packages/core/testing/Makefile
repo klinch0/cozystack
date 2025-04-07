@@ -32,7 +32,7 @@ image-e2e-sandbox:
 		--push=$(PUSH) \
 		--label "org.opencontainers.image.source=https://github.com/cozystack/cozystack" \
 		--load=$(LOAD)
-	IMAGE="$(REGISTRY)/e2e-sandbox:$(call settag,$(TAG))@$$(yq e '."containerimage.digest"' images/e2e-sandbox.json -o json -r)" \
+	IMAGE="$(REGISTRY)/$(SANDBOX_NAME):$(call settag,$(TAG))@$$(yq e '."containerimage.digest"' images/e2e-sandbox.json -o json -r)" \
 		yq -i '.e2e.image = strenv(IMAGE)' values.yaml
 	rm -f images/e2e-sandbox.json
 
